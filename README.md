@@ -30,11 +30,6 @@
   <img src="docs/screenshots/home.webp" width="16%" alt="Home">
 </p>
 
-A no-jailbreak Theos tweak that rebuilds Spotify for iOS in Liquid Glass, injected into your own
-decrypted IPA and signed with your own certificate.
-
-Built and tested on **Spotify 9.1.78** — use that version's IPA. The mod hooks Spotify's own classes,
-which change between releases, so another version may build and then break.
 
 | | |
 |---|---|
@@ -46,64 +41,6 @@ The redesign is `UIGlassEffect`, which only exists from iOS 26. Below that the R
 is greyed out and the mod runs Spotify's own screens with everything else it adds on top. Both live
 in Settings → Mod Settings.
 
-## Build it
-
-No IPA is distributed. Bring a decrypted **Spotify 9.1.78** IPA; you get an unsigned
-`spoti.pw-<mod version>.ipa` to sign with SideStore, Feather or any certificate signer. Each
-[release](https://github.com/skopevoj/spoti.pw/releases) also carries the tweak's `.deb`.
-
-### Build with GitHub Actions
-
-Fork the repo, enable Actions, run **Build IPA from your own Spotify IPA**. It takes a direct link to
-your decrypted `.ipa` and hands the built IPA back as a workflow artifact. No Mac needed; the link is
-masked in the log and the result stays in your fork.
-
-### Build on a Mac
-
-Theos in `~/theos` and Xcode with an iPhoneOS 26+ SDK (`xcode-select` it). An SDK in `~/theos/sdks`
-alone builds too, but without the Live Activity. Then:
-
-    brew install make ldid dpkg zsign ideviceinstaller libimobiledevice
-    uv tool install "cyan @ git+https://github.com/asdfzxcvbn/pyzule-rw"
-
-Put the decrypted `.ipa` in `ipa/`, then:
-
-    make release    # out/spoti.pw-<version>.ipa, ready to sign
-    make install    # the same, signed with your certificate and pushed over USB
-
-`make install` reads `SIGN_P12`, `SIGN_PROFILE` and `SIGN_P12_PASSWORD` from `.signing.env`; copy
-`.signing.env.example` and fill it in.
-
-The first build spends a minute reading Spotify's flags out of your IPA. `make flags` regenerates it.
-
-### Signing
-
-Sign with a bundle id matching your certificate's App ID. If it doesn't match, the app still works
-but tapping the player on the lock screen won't open it — and it tells you on first launch which id
-to use. In Feather, copy the App ID into **Identifier** and leave **PPQ protection** off; AltStore,
-SideStore and Sideloadly get this right on their own.
-
-The app keeps Spotify's bundle id, so it installs over the real Spotify.
-
-## Support
-
-Free, and staying that way — no paid tier, no supporter-only builds. If it made your phone nicer
-to use, a coffee is a good way to say so.
-
-<a href="https://ko-fi.com/darkksh">
-  <img src="https://img.shields.io/badge/Ko--fi-Buy_me_a_coffee-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Support on Ko-fi">
-</a>
-
-## Star history
-
-<a href="https://star-history.com/#skopevoj/spoti.pw&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=skopevoj/spoti.pw&type=Date&theme=dark">
-    <img src="https://api.star-history.com/svg?repos=skopevoj/spoti.pw&type=Date" alt="Star history chart">
-  </picture>
-</a>
-
-## Credits
 
 [cyan](https://github.com/asdfzxcvbn/pyzule-rw) injects, [Theos](https://theos.dev) builds, and
 [FLEX](https://github.com/FLEXTool/FLEX), as hopeless's AutoFLEX build in `vendor/`, is the inspector
